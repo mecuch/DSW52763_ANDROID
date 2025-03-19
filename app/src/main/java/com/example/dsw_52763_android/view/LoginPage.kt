@@ -1,30 +1,68 @@
 package com.example.dsw_52763_android.view
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.dsw_52763_android.R
+import com.example.dsw_52763_android.utils.non_clickables
 import com.example.dsw_52763_android.utils.routes
 
 
 @Composable
 fun LoginPage(navController: NavController){
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Sign In")
-        Button(onClick = {
-            navController.navigate(routes.registerPage)
-        }) {
-            Text("Sign in")
-
+        Image(
+            painter = painterResource(id = R.drawable.logo_main),
+            contentDescription = "logo",
+            modifier = Modifier
+                .size(140.dp)
+                .padding(vertical = 10.dp)
+        )
+        Column{
+            non_clickables.HeaderText("Sign In")
+            non_clickables.StandardTextField(
+                values = username,
+                labelValues = "User name/E-mail",
+                onValueChange = { username = it }
+            )
+            non_clickables.StandardTextField(
+                values = password,
+                labelValues = "Password",
+                onValueChange = { username = it }
+            )
+            Button(onClick = {
+                navController.navigate(routes.registerPage)
+            }) {
+                Text("Sign in")
+            }
         }
     }
 }
+
+
