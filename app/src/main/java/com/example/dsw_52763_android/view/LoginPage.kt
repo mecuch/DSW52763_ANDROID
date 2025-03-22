@@ -4,8 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -22,6 +24,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.dsw_52763_android.R
+import com.example.dsw_52763_android.utils.clickables
+import com.example.dsw_52763_android.utils.images
 import com.example.dsw_52763_android.utils.non_clickables
 import com.example.dsw_52763_android.utils.routes
 
@@ -37,13 +41,7 @@ fun LoginPage(navController: NavController){
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.logo_main),
-            contentDescription = "logo",
-            modifier = Modifier
-                .size(140.dp)
-                .padding(vertical = 10.dp)
-        )
+        images.Logos()
         Column{
             non_clickables.HeaderText("Sign In")
             non_clickables.StandardTextField(
@@ -51,16 +49,18 @@ fun LoginPage(navController: NavController){
                 labelValues = "User name/E-mail",
                 onValueChange = { username = it }
             )
-            non_clickables.StandardTextField(
+            non_clickables.StandardPasswordTextField(
                 values = password,
                 labelValues = "Password",
-                onValueChange = { username = it }
+                onValueChange = { password = it }
             )
-            Button(onClick = {
-                navController.navigate(routes.registerPage)
-            }) {
-                Text("Sign in")
-            }
+            clickables.ClickableButton(navController, routes.homePage, "Sign In")
+            Spacer(modifier = Modifier.height(100.dp))
+            clickables.ClickableText(navController,
+                "Don't have an account?",
+                "Sign Up",
+                routes.registerPage
+            )
         }
     }
 }

@@ -24,11 +24,7 @@ import com.example.dsw_52763_android.utils.non_clickables
 import com.example.dsw_52763_android.utils.routes
 
 @Composable
-fun RegisterPage(navController: NavController){
-    var username by remember { mutableStateOf("") }
-    var emails by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmpassword by remember { mutableStateOf("") }
+fun HomePage(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -49,34 +45,7 @@ fun RegisterPage(navController: NavController){
         verticalArrangement = Arrangement.Center
     ) {
         Column {
-            non_clickables.HeaderText("Sign Up")
-            non_clickables.StandardTextField(
-                values = username,
-                labelValues = "Full name",
-                onValueChange = { username = it }
-            )
-            non_clickables.StandardTextField(
-                values = emails,
-                labelValues = "E-mail",
-                onValueChange = { emails = it }
-            )
-            non_clickables.StandardPasswordTextField(
-                values = password,
-                labelValues = "Password",
-                onValueChange = { password = it }
-            )
-            non_clickables.StandardPasswordTextField(
-                values = confirmpassword,
-                labelValues = "Confirm Password",
-                onValueChange = { confirmpassword = it }
-            )
-            clickables.ClickableButton(navController, routes.loginPage, "Sign Up")
-            Spacer(
-                modifier = Modifier.height(200.dp))
-            clickables.ClickableText(navController,
-                "Already have a account?",
-                "Sign In",
-                routes.loginPage)
+            non_clickables.HeaderText("Under Construction")
         }
     }
 }
