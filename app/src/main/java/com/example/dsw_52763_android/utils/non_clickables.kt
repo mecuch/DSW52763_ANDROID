@@ -1,6 +1,7 @@
 package com.example.dsw_52763_android.utils
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -18,6 +19,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 
 object non_clickables {
@@ -38,6 +42,10 @@ object non_clickables {
             onValueChange = onValueChange,
             label = { Text(labelValues) },
             singleLine = true,
+            shape = RoundedCornerShape(15.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = colors.ornamentscolor,
+                unfocusedBorderColor = colors.ligthornamentscolor),
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -58,6 +66,10 @@ object non_clickables {
                     Icon(imageVector = icon, contentDescription = description)
                 }
             },
+            shape = RoundedCornerShape(15.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = colors.ornamentscolor,
+                unfocusedBorderColor = colors.ligthornamentscolor),
             modifier = Modifier.fillMaxWidth()
         )
     }

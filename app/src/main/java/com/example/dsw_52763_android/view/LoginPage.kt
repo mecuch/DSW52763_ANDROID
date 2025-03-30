@@ -44,18 +44,21 @@ fun LoginPage(navController: NavController){
         images.Logos()
         Column{
             non_clickables.HeaderText("Sign In")
+            Spacer(modifier = Modifier.height(20.dp))
             non_clickables.StandardTextField(
                 values = username,
                 labelValues = "User name/E-mail",
                 onValueChange = { username = it }
             )
+            Spacer(modifier = Modifier.height(40.dp))
             non_clickables.StandardPasswordTextField(
                 values = password,
                 labelValues = "Password",
                 onValueChange = { password = it }
             )
+            Spacer(modifier = Modifier.height(40.dp))
             clickables.ClickableButton(navController, routes.homePage, "Sign In")
-            Spacer(modifier = Modifier.height(100.dp))
+            Spacer(modifier = Modifier.height(90.dp))
             clickables.ClickableText(navController,
                 "Don't have an account?",
                 "Sign Up",
