@@ -50,13 +50,13 @@ fun LoginPage(navController: NavController){
                 labelValues = "User name/E-mail",
                 onValueChange = { username = it }
             )
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             non_clickables.StandardPasswordTextField(
                 values = password,
                 labelValues = "Password",
                 onValueChange = { password = it }
             )
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             clickables.ClickableButton(navController, routes.homePage, "Sign In")
             Spacer(modifier = Modifier.height(90.dp))
             clickables.ClickableText(navController,
