@@ -2,4 +2,8 @@
 <resources>
 
     <style name="Theme.DSW_52763_ANDROID" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.MyApp.Splash" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo_fullscreen</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/white</item>
+    </style>
 </resources>

@@ -50,31 +50,31 @@ fun RegisterPage(navController: NavController){
     ) {
         Column {
             non_clickables.HeaderText("Sign Up")
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             non_clickables.StandardTextField(
                 values = username,
                 labelValues = "Full name",
                 onValueChange = { username = it }
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             non_clickables.StandardTextField(
                 values = emails,
                 labelValues = "E-mail",
                 onValueChange = { emails = it }
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             non_clickables.StandardPasswordTextField(
                 values = password,
                 labelValues = "Password",
                 onValueChange = { password = it }
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             non_clickables.StandardPasswordTextField(
                 values = confirmpassword,
                 labelValues = "Confirm Password",
                 onValueChange = { confirmpassword = it }
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             clickables.ClickableButton(navController, routes.loginPage, "Sign Up")
             Spacer(
                 modifier = Modifier.height(100.dp))

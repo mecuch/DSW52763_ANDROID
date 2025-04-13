@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Tło - biały kolor -->
+    <item android:drawable="@color/white"/>
+
+    <!-- Logo - wyśrodkowane -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/logo_main"
+            android:tileMode="disabled" />
+    </item>
+</layer-list>
