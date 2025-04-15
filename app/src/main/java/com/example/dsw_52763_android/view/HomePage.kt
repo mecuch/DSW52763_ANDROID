@@ -68,19 +68,20 @@ fun HomePage(viewModel: ToDoViewModel, navController: NavController) {
     }
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp)
+            .padding(top = 80.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
+
     ) {
         Column {
-            non_clickables.HeaderText("Under Construction")
+            non_clickables.HeaderText("Hello, User!")
         }
 
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(8.dp)
+                .padding(8.dp),
         ) {
 
             Row(
