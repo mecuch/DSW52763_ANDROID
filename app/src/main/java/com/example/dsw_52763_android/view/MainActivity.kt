@@ -17,20 +17,18 @@ class MainActivity : ComponentActivity() {
         val toDoViewModel = ViewModelProvider(this)[ToDoViewModel::class.java]
         enableEdgeToEdge()
         setContent {
-//            val navController = rememberNavController()
-//            NavHost(navController = navController, startDestination = routes.loginPage, builder = {
-//                composable(routes.loginPage){
-//                    LoginPage(navController = navController)
-//                }
-//                composable(routes.registerPage){
-//                    RegisterPage(navController = navController)
-//                }
-//                composable(routes.homePage){
-//                    HomePage(navController = navController)
-//                }
-//            })
-            HomePage(viewModel = toDoViewModel)
-
+            val navController = rememberNavController()
+            NavHost(navController = navController, startDestination = routes.loginPage, builder = {
+                composable(routes.loginPage){
+                    LoginPage(navController = navController)
+                }
+                composable(routes.registerPage){
+                    RegisterPage(navController = navController)
+                }
+                composable(routes.homePage){
+                    HomePage(viewModel = toDoViewModel, navController = navController)
+                }
+            })
         }
     }
 }

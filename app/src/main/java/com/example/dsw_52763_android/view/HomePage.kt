@@ -47,7 +47,7 @@ import com.example.dsw_52763_android.view_model.ToDoViewModel
 import java.util.Locale
 
 @Composable
-fun HomePage( viewModel: ToDoViewModel) {
+fun HomePage(viewModel: ToDoViewModel, navController: NavController) {
 
     val todoList by viewModel.todoList.observeAsState()
     var inputText by remember {
@@ -59,12 +59,12 @@ fun HomePage( viewModel: ToDoViewModel) {
             .fillMaxSize()
             .padding(WindowInsets.safeDrawing.asPaddingValues())
     ) {
-//        Row(
-//            modifier = Modifier
-//                .padding(horizontal = 16.dp)
-//        ) {
-//            clickables.ClickableBack(navController)
-//        }
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+        ) {
+            clickables.ClickableBack(navController)
+        }
     }
     Column(
         modifier = Modifier
