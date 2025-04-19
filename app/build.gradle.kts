@@ -54,6 +54,7 @@ dependencies {
 
     implementation(libs.androidx.adapters)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.firebase.firestore.ktx)
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")
