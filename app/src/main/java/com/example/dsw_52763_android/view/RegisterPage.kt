@@ -17,11 +17,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.dsw_52763_android.utils.clickables
 import com.example.dsw_52763_android.utils.non_clickables
 import com.example.dsw_52763_android.utils.routes
+import com.example.dsw_52763_android.view_model.RegisterUserViewModel
 
 @Composable
 fun RegisterPage(navController: NavController){
@@ -29,6 +32,8 @@ fun RegisterPage(navController: NavController){
     var emails by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmpassword by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val viewModel: RegisterUserViewModel = viewModel()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -75,7 +80,7 @@ fun RegisterPage(navController: NavController){
                 onValueChange = { confirmpassword = it }
             )
             Spacer(modifier = Modifier.height(15.dp))
-            clickables.ClickableButton(navController, routes.loginPage, "Sign Up")
+            clickables.RegisterClickableButton(navController, routes.loginPage, username, emails, password, confirmpassword)
             Spacer(
                 modifier = Modifier.height(100.dp))
             clickables.ClickableText(navController,

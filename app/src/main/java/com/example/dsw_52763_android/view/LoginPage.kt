@@ -57,7 +57,7 @@ fun LoginPage(navController: NavController){
                 onValueChange = { password = it }
             )
             Spacer(modifier = Modifier.height(15.dp))
-            clickables.ClickableButton(navController, routes.homePage, "Sign In")
+            clickables.LoginClickableButton(navController, username, password)
             Spacer(modifier = Modifier.height(90.dp))
             clickables.ClickableText(navController,
                 "Don't have an account?",

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.dsw_52763_android.utils.routes
 import com.example.dsw_52763_android.view_model.ToDoViewModel
 
@@ -25,8 +26,16 @@ class MainActivity : ComponentActivity() {
                 composable(routes.registerPage){
                     RegisterPage(navController = navController)
                 }
-                composable(routes.homePage){
-                    HomePage(viewModel = toDoViewModel, navController = navController)
+                composable(
+                    route = "homePage/{dbName}/{fullName}",
+                    arguments = listOf(
+                        navArgument("dbName") { defaultValue = "default.db" },
+                        navArgument("fullName") { defaultValue = "User" }
+                    )
+                ) { backStackEntry ->
+                    val dbName = backStackEntry.arguments?.getString("dbName") ?: "default.db"
+                    val fullName = backStackEntry.arguments?.getString("fullName") ?: "User"
+                    HomePage(viewModel = toDoViewModel, navController = navController, dbName, fullName)
                 }
             })
         }

@@ -15,12 +15,81 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dsw_52763_android.view_model.LoginUserViewModel
+import com.example.dsw_52763_android.view_model.RegisterUserViewModel
 
 object clickables {
+    @Composable
+    fun RegisterClickableButton(navController: NavController,
+                                destinations: String,
+                                username: String,
+                                emails: String,
+                                password: String,
+                                confirmpassword: String) {
+        val context = LocalContext.current
+        val viewModel: RegisterUserViewModel = viewModel()
+        Button(onClick = {
+            viewModel.registerUser(
+                context = context,
+                fullName = username,
+                email = emails,
+                password = password,
+                confirmPassword = confirmpassword
+            )
+        },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colors.ornamentscolor,
+                contentColor = Color.White
+            ),
+            modifier = Modifier.fillMaxWidth()) {
+            Text("Sign Up")
+        }
+        if (viewModel.registrationSuccess.value) {
+            // Automatycznie przekieruj do logowania po sukcesie
+            LaunchedEffect(Unit) {
+                navController.navigate(destinations)
+            }
+            non_clickables.HeaderText("User created succesfully!")
+        }
+
+        if (viewModel.errorMessage.value.isNotEmpty()) {
+            non_clickables.HeaderText("❗ ${viewModel.errorMessage.value}")
+        }
+    }
+
+    @Composable
+    fun LoginClickableButton(navController: NavController, username: String, password: String) {
+        val context = LocalContext.current
+        val viewModel: LoginUserViewModel = viewModel()
+        Button(onClick = {
+            viewModel.loginUser(context, username, password)
+        },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colors.ornamentscolor,
+                contentColor = Color.White
+            ),
+            modifier = Modifier.fillMaxWidth()) {
+            Text("Sign in")
+        }
+        if (viewModel.loginSuccess.value) {
+            LaunchedEffect(Unit) {
+                navController.navigate("homePage/${viewModel.noteDbName}/${viewModel.fullName}")
+            }
+            non_clickables.HeaderText("Login Succesfull!")
+        }
+
+        if (viewModel.errorMessage.value.isNotEmpty()) {
+            non_clickables.HeaderText("❗ ${viewModel.errorMessage.value}")
+        }
+    }
+
     @Composable
     fun ClickableBack(navController: NavController) {
         Row {

@@ -47,7 +47,7 @@ import com.example.dsw_52763_android.view_model.ToDoViewModel
 import java.util.Locale
 
 @Composable
-fun HomePage(viewModel: ToDoViewModel, navController: NavController) {
+fun HomePage(viewModel: ToDoViewModel, navController: NavController, dbName: String, fullName: String) {
 
     val todoList by viewModel.todoList.observeAsState()
     var inputText by remember {
@@ -75,7 +75,7 @@ fun HomePage(viewModel: ToDoViewModel, navController: NavController) {
 
     ) {
         Column {
-            non_clickables.HeaderText("Hello, User!")
+            non_clickables.HeaderText("Hello, $fullName!")
         }
 
         Column(

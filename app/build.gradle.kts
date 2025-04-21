@@ -81,5 +81,6 @@ dependencies {
     val nav_version = "2.8.9"
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.room:room-ktx:2.6.1")
 
 }
