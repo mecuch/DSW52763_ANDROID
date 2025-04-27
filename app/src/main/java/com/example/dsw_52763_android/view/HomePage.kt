@@ -63,7 +63,7 @@ fun HomePage(viewModel: ToDoViewModel, navController: NavController, dbName: Str
             modifier = Modifier
                 .padding(horizontal = 16.dp)
         ) {
-            clickables.ClickableBack(navController)
+            clickables.ClickableLogout(navController)
         }
     }
     Column(

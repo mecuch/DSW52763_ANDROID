@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -41,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.11"
     }
     packaging {
         resources {
@@ -55,6 +56,7 @@ dependencies {
     implementation(libs.androidx.adapters)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.auth.ktx)
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")
@@ -82,5 +84,9 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.compose.compiler:compiler:1.5.11")
+    implementation ("com.google.firebase:firebase-bom:32.7.0")
+    implementation("com.google.firebase:firebase-auth")
+    implementation ("com.google.firebase:firebase-firestore")
 
 }

@@ -5,88 +5,130 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.dsw_52763_android.view_model.LoginUserViewModel
 import com.example.dsw_52763_android.view_model.RegisterUserViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 object clickables {
+
     @Composable
-    fun RegisterClickableButton(navController: NavController,
-                                destinations: String,
-                                username: String,
-                                emails: String,
-                                password: String,
-                                confirmpassword: String) {
-        val context = LocalContext.current
-        val viewModel: RegisterUserViewModel = viewModel()
-        Button(onClick = {
-            viewModel.registerUser(
-                context = context,
-                fullName = username,
-                email = emails,
-                password = password,
-                confirmPassword = confirmpassword
-            )
-        },
+    fun RegisterClickableButton(
+        navController: NavController,
+        destinations: String,
+        username: String,
+        email: String,
+        password: String,
+        confirmPassword: String,
+        registerViewModel: RegisterUserViewModel // <-- PRZEKAZUJEMY ViewModel
+    ) {
+        Button(
+            onClick = {
+                registerViewModel.registerUser(
+                    fullName = username,
+                    email = email,
+                    password = password,
+                    confirmPassword = confirmPassword
+                )
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = colors.ornamentscolor,
                 contentColor = Color.White
             ),
-            modifier = Modifier.fillMaxWidth()) {
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text("Sign Up")
         }
-        if (viewModel.registrationSuccess.value) {
-            // Automatycznie przekieruj do logowania po sukcesie
+
+        if (registerViewModel.registrationSuccess.value) {
             LaunchedEffect(Unit) {
-                navController.navigate(destinations)
+                navController.navigate(destinations) {
+                    popUpTo(destinations) { inclusive = true }
+                }
             }
-            non_clickables.HeaderText("User created succesfully!")
+            non_clickables.HeaderText("User created successfully!")
         }
 
-        if (viewModel.errorMessage.value.isNotEmpty()) {
-            non_clickables.HeaderText("❗ ${viewModel.errorMessage.value}")
+        if (registerViewModel.errorMessage.value.isNotEmpty()) {
+            non_clickables.HeaderText("❗ ${registerViewModel.errorMessage.value}")
         }
     }
 
     @Composable
-    fun LoginClickableButton(navController: NavController, username: String, password: String) {
-        val context = LocalContext.current
-        val viewModel: LoginUserViewModel = viewModel()
-        Button(onClick = {
-            viewModel.loginUser(context, username, password)
-        },
+    fun LoginClickableButton(
+        navController: NavController,
+        username: String,
+        password: String,
+        loginViewModel: LoginUserViewModel // <-- PRZEKAZUJEMY ViewModel
+    ) {
+        Button(
+            onClick = {
+                loginViewModel.loginUser(
+                    email = username,
+                    password = password
+                )
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = colors.ornamentscolor,
                 contentColor = Color.White
             ),
-            modifier = Modifier.fillMaxWidth()) {
-            Text("Sign in")
-        }
-        if (viewModel.loginSuccess.value) {
-            LaunchedEffect(Unit) {
-                navController.navigate("homePage/${viewModel.noteDbName}/${viewModel.fullName}")
-            }
-            non_clickables.HeaderText("Login Succesfull!")
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Sign In")
         }
 
-        if (viewModel.errorMessage.value.isNotEmpty()) {
-            non_clickables.HeaderText("❗ ${viewModel.errorMessage.value}")
+        if (loginViewModel.loginSuccess.value) {
+            LaunchedEffect(Unit) {
+                val dbName = loginViewModel.noteDbName
+                val fullName = loginViewModel.fullName
+                navController.navigate("homePage/$dbName/$fullName") {
+                    popUpTo(routes.loginPage) { inclusive = true }
+                }
+            }
+            non_clickables.HeaderText("Login Successful!")
+        }
+
+        if (loginViewModel.errorMessage.value.isNotEmpty()) {
+            non_clickables.HeaderText("❗ ${loginViewModel.errorMessage.value}")
+        }
+    }
+
+    @Composable
+    fun ClickableLogout(navController: NavController) {
+        Row(
+            modifier = Modifier.clickable {
+                // Wyloguj użytkownika z Firebase
+                FirebaseAuth.getInstance().signOut()
+
+                // Przejdź na stronę logowania
+                navController.navigate(routes.loginPage) {
+                    popUpTo(0) { inclusive = true } // Usuwa wszystkie wcześniejsze strony z back stacku
+                }
+            }
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Wstecz",
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                "Logout!",
+                fontSize = 18.sp,
+                color = colors.headerfontcolor,
+            )
         }
     }
 

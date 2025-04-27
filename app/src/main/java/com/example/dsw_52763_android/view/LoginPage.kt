@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,20 +21,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.dsw_52763_android.R
 import com.example.dsw_52763_android.utils.clickables
 import com.example.dsw_52763_android.utils.images
 import com.example.dsw_52763_android.utils.non_clickables
 import com.example.dsw_52763_android.utils.routes
+import com.example.dsw_52763_android.view_model.LoginUserViewModel
+
 
 
 @Composable
-fun LoginPage(navController: NavController){
+fun LoginPage(navController: NavController, loginViewModel : LoginUserViewModel){
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val loginViewModel: LoginUserViewModel = viewModel()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +63,7 @@ fun LoginPage(navController: NavController){
                 onValueChange = { password = it }
             )
             Spacer(modifier = Modifier.height(15.dp))
-            clickables.LoginClickableButton(navController, username, password)
+            clickables.LoginClickableButton(navController, username, password, loginViewModel)
             Spacer(modifier = Modifier.height(90.dp))
             clickables.ClickableText(navController,
                 "Don't have an account?",
@@ -66,6 +72,7 @@ fun LoginPage(navController: NavController){
             )
         }
     }
+
 }
 
 
