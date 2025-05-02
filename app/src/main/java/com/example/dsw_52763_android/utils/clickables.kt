@@ -19,92 +19,89 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.dsw_52763_android.view_model.LoginUserViewModel
-import com.example.dsw_52763_android.view_model.RegisterUserViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 object clickables {
 
-    @Composable
-    fun RegisterClickableButton(
-        navController: NavController,
-        destinations: String,
-        username: String,
-        email: String,
-        password: String,
-        confirmPassword: String,
-        registerViewModel: RegisterUserViewModel // <-- PRZEKAZUJEMY ViewModel
-    ) {
-        Button(
-            onClick = {
-                registerViewModel.registerUser(
-                    fullName = username,
-                    email = email,
-                    password = password,
-                    confirmPassword = confirmPassword
-                )
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = colors.ornamentscolor,
-                contentColor = Color.White
-            ),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Sign Up")
-        }
+//    @Composable
+//    fun RegisterClickableButton(
+//        navController: NavController,
+//        destinations: String,
+//        username: String,
+//        email: String,
+//        password: String,
+//        confirmPassword: String,
+//        registerViewModel: RegisterUserViewModel // <-- PRZEKAZUJEMY ViewModel
+//    ) {
+//        Button(
+//            onClick = {
+//                registerViewModel.registerUser(
+//                    fullName = username,
+//                    email = email,
+//                    password = password,
+//                    confirmPassword = confirmPassword
+//                )
+//            },
+//            colors = ButtonDefaults.buttonColors(
+//                containerColor = colors.ornamentscolor,
+//                contentColor = Color.White
+//            ),
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            Text("Sign Up")
+//        }
+//
+//        if (registerViewModel.registrationSuccess.value) {
+//            LaunchedEffect(Unit) {
+//                navController.navigate(destinations) {
+//                    popUpTo(destinations) { inclusive = true }
+//                }
+//            }
+//            non_clickables.GrantedText("User created successfully!")
+//        }
+//
+//        if (registerViewModel.errorMessage.value.isNotEmpty()) {
+//            non_clickables.WarningErrorText(registerViewModel.errorMessage.value)
+//        }
+//    }
 
-        if (registerViewModel.registrationSuccess.value) {
-            LaunchedEffect(Unit) {
-                navController.navigate(destinations) {
-                    popUpTo(destinations) { inclusive = true }
-                }
-            }
-            non_clickables.HeaderText("User created successfully!")
-        }
-
-        if (registerViewModel.errorMessage.value.isNotEmpty()) {
-            non_clickables.HeaderText("❗ ${registerViewModel.errorMessage.value}")
-        }
-    }
-
-    @Composable
-    fun LoginClickableButton(
-        navController: NavController,
-        username: String,
-        password: String,
-        loginViewModel: LoginUserViewModel // <-- PRZEKAZUJEMY ViewModel
-    ) {
-        Button(
-            onClick = {
-                loginViewModel.loginUser(
-                    email = username,
-                    password = password
-                )
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = colors.ornamentscolor,
-                contentColor = Color.White
-            ),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Sign In")
-        }
-
-        if (loginViewModel.loginSuccess.value) {
-            LaunchedEffect(Unit) {
-                val dbName = loginViewModel.noteDbName
-                val fullName = loginViewModel.fullName
-                navController.navigate("homePage/$dbName/$fullName") {
-                    popUpTo(routes.loginPage) { inclusive = true }
-                }
-            }
-            non_clickables.HeaderText("Login Successful!")
-        }
-
-        if (loginViewModel.errorMessage.value.isNotEmpty()) {
-            non_clickables.HeaderText("❗ ${loginViewModel.errorMessage.value}")
-        }
-    }
+//    @Composable
+//    fun LoginClickableButton(
+//        navController: NavController,
+//        username: String,
+//        password: String,
+//        loginViewModel: LoginUserViewModel // <-- PRZEKAZUJEMY ViewModel
+//    ) {
+//        Button(
+//            onClick = {
+//                loginViewModel.loginUser(
+//                    email = username,
+//                    password = password
+//                )
+//            },
+//            colors = ButtonDefaults.buttonColors(
+//                containerColor = colors.ornamentscolor,
+//                contentColor = Color.White
+//            ),
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            Text("Sign In")
+//        }
+//
+//        if (loginViewModel.loginSuccess.value) {
+//            LaunchedEffect(Unit) {
+//                val fullName = loginViewModel.fullName
+//                navController.navigate("homePage/$fullName") {
+//                    popUpTo(routes.loginPage) { inclusive = true }
+//                }
+//            }
+//            non_clickables.GrantedText("Login Successful!")
+//        }
+//
+//        if (loginViewModel.errorMessage.value.isNotEmpty()) {
+//            non_clickables.WarningErrorText(loginViewModel.errorMessage.value)
+//        }
+//    }
 
     @Composable
     fun ClickableLogout(navController: NavController) {

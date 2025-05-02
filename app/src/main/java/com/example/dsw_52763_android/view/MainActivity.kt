@@ -11,9 +11,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.dsw_52763_android.utils.routes
-import com.example.dsw_52763_android.view_model.LoginUserViewModel
-import com.example.dsw_52763_android.view_model.RegisterUserViewModel
+import com.example.dsw_52763_android.view_model.AuthViewModel
 import com.example.dsw_52763_android.view_model.ToDoViewModel
+import com.example.dsw_52763_android.view_model.ToDoViewModelFactory
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 
@@ -33,36 +33,31 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             val startDestination = if (currentUser != null) {
-                "homePage/notes_${currentUser.uid}/${currentUser.displayName ?: "User"}"
+                "homePage/${currentUser.uid}"
             } else {
                 routes.loginPage
             }
-
             NavHost(navController = navController, startDestination = startDestination) {
                 composable(routes.loginPage) {
-                    val loginViewModel: LoginUserViewModel = viewModel()
-                    LoginPage(navController = navController, loginViewModel = loginViewModel)
+                    val authViewModel: AuthViewModel = viewModel()
+                    LoginPage(navController = navController, authViewModel = authViewModel)
                 }
                 composable(routes.registerPage) {
-                    val registerViewModel: RegisterUserViewModel = viewModel()
-                    RegisterPage(navController = navController, registerViewModel = registerViewModel)
+                    val authViewModel: AuthViewModel = viewModel()
+                    RegisterPage(navController = navController, authViewModel = authViewModel)
                 }
                 composable(
-                    route = "homePage/{dbName}/{fullName}",
+                    route = "homePage/{userId}",
                     arguments = listOf(
-                        navArgument("dbName") { defaultValue = "default.db" },
-                        navArgument("fullName") { defaultValue = "User" }
+                        navArgument("userId") { defaultValue = "" }
                     )
                 ) { backStackEntry ->
-                    val dbName = backStackEntry.arguments?.getString("dbName") ?: "default.db"
-                    val fullName = backStackEntry.arguments?.getString("fullName") ?: "User"
-                    HomePage(
-                        navController = navController,
-                        dbName = dbName,
-                        fullName = fullName,
-                        viewModel = viewModel()
-                    )
+                    val userId = backStackEntry.arguments?.getString("userId") ?: ""
 
+                    val factory = ToDoViewModelFactory(applicationContext, userId)
+                    val toDoViewModel: ToDoViewModel = viewModel(factory = factory)
+
+                    HomePage(navController = navController, viewModel = toDoViewModel)
                 }
             }
         }

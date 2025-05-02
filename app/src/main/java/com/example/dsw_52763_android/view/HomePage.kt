@@ -47,9 +47,9 @@ import com.example.dsw_52763_android.view_model.ToDoViewModel
 import java.util.Locale
 
 @Composable
-fun HomePage(viewModel: ToDoViewModel, navController: NavController, dbName: String, fullName: String) {
+fun HomePage(viewModel: ToDoViewModel, navController: NavController) {
 
-    val todoList by viewModel.todoList.observeAsState()
+    val todoList by viewModel.allNotes.observeAsState()
     var inputText by remember {
         mutableStateOf("")
     }
@@ -75,7 +75,7 @@ fun HomePage(viewModel: ToDoViewModel, navController: NavController, dbName: Str
 
     ) {
         Column {
-            non_clickables.HeaderText("Hello, $fullName!")
+            non_clickables.HeaderText("Hello!")
         }
 
         Column(
@@ -97,7 +97,7 @@ fun HomePage(viewModel: ToDoViewModel, navController: NavController, dbName: Str
                         inputText = it
                     })
                 Button(onClick = {
-                    viewModel.addToDo(inputText)
+                    viewModel.addNote(inputText)
                     inputText = ""
                 }) {
                     Text(text = "Add")
@@ -109,7 +109,7 @@ fun HomePage(viewModel: ToDoViewModel, navController: NavController, dbName: Str
                     content = {
                         itemsIndexed(it) { index: Int, item: ToDo ->
                             TodoItem(item = item, onDelete = {
-                                viewModel.deleteToDo(item.id)
+                                viewModel.deleteNote(item.id)
                             })
                         }
                     }

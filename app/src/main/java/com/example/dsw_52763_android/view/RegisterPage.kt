@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -14,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -27,15 +29,28 @@ import androidx.navigation.NavController
 import com.example.dsw_52763_android.utils.clickables
 import com.example.dsw_52763_android.utils.non_clickables
 import com.example.dsw_52763_android.utils.routes
-import com.example.dsw_52763_android.view_model.RegisterUserViewModel
+import com.example.dsw_52763_android.view_model.AuthState
+import com.example.dsw_52763_android.view_model.AuthViewModel
+import com.google.firebase.auth.FirebaseAuth
+import androidx.compose.material3.Button
 
 @Composable
-fun RegisterPage(navController: NavController, registerViewModel : RegisterUserViewModel){
+fun RegisterPage(navController: NavController, authViewModel : AuthViewModel){
     var username by remember { mutableStateOf("") }
     var emails by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmpassword by remember { mutableStateOf("") }
-    val registerViewModel: RegisterUserViewModel = viewModel()
+    val authState by authViewModel.authState.observeAsState()
+    LaunchedEffect(authState) {
+        if (authState is AuthState.Authenticated) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null) {
+                navController.navigate("homePage/$userId") {
+                    popUpTo(0) { inclusive = true }
+                }
+            }
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -82,7 +97,23 @@ fun RegisterPage(navController: NavController, registerViewModel : RegisterUserV
                 onValueChange = { confirmpassword = it }
             )
             Spacer(modifier = Modifier.height(15.dp))
-            clickables.RegisterClickableButton(navController, routes.loginPage, username, emails, password, confirmpassword, registerViewModel)
+            Button(
+                onClick = {
+                    if (password == confirmpassword) {
+                        authViewModel.signup(emails, password)
+                    } else {
+                        // Możesz zareagować lokalnie np. komunikatem
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Sign Up")
+            }
+
+            if (authState is AuthState.Error) {
+                val error = (authState as AuthState.Error).message
+                non_clickables.WarningErrorText(error)
+            }
             Spacer(
                 modifier = Modifier.height(100.dp))
             clickables.ClickableText(navController,

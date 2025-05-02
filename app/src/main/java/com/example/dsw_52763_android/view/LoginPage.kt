@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,15 +32,26 @@ import com.example.dsw_52763_android.utils.clickables
 import com.example.dsw_52763_android.utils.images
 import com.example.dsw_52763_android.utils.non_clickables
 import com.example.dsw_52763_android.utils.routes
-import com.example.dsw_52763_android.view_model.LoginUserViewModel
-
+import com.example.dsw_52763_android.view_model.AuthState
+import com.example.dsw_52763_android.view_model.AuthViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun LoginPage(navController: NavController, loginViewModel : LoginUserViewModel){
+fun LoginPage(navController: NavController, authViewModel : AuthViewModel){
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val loginViewModel: LoginUserViewModel = viewModel()
+    val authState by authViewModel.authState.observeAsState()
+    LaunchedEffect(authState) {
+        if (authState is AuthState.Authenticated) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null) {
+                navController.navigate("homePage/$userId") {
+                    popUpTo(0) { inclusive = true }
+                }
+            }
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,7 +75,19 @@ fun LoginPage(navController: NavController, loginViewModel : LoginUserViewModel)
                 onValueChange = { password = it }
             )
             Spacer(modifier = Modifier.height(15.dp))
-            clickables.LoginClickableButton(navController, username, password, loginViewModel)
+            Button(
+                onClick = {
+                    authViewModel.login(username, password)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Login Bitch!")
+            }
+
+            if (authState is AuthState.Error) {
+                val error = (authState as AuthState.Error).message
+                non_clickables.WarningErrorText(error)
+            }
             Spacer(modifier = Modifier.height(90.dp))
             clickables.ClickableText(navController,
                 "Don't have an account?",

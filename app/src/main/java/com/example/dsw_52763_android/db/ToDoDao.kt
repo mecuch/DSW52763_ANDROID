@@ -8,13 +8,13 @@ import com.example.dsw_52763_android.model.ToDo
 
 @Dao
 interface ToDoDao {
-    @Query("SELECT * FROM ToDo ORDER BY createdAt DESC")
-    fun getAllToDo() : LiveData<List<ToDo>>
+    @Query("SELECT * FROM ToDo WHERE userId = :userId ORDER BY createdAt DESC")
+    fun getAllToDo(userId: String) : LiveData<List<ToDo>>
 
     @Insert
     fun addTodo(todo : ToDo)
 
-    @Query("DELETE FROM ToDo where id = :id")
-    fun deleteToDo(id : Int)
+    @Query("DELETE FROM ToDo where id = :id AND userId = :userId")
+    fun deleteToDo(id : Int, userId: String)
 
     }

@@ -26,6 +26,24 @@ import androidx.compose.ui.unit.dp
 
 object non_clickables {
     @Composable
+    fun GrantedText(contents: String){
+        Text(
+            text = contents,
+            color = colors.grantedcolor,
+            fontSize = 15.sp
+        )
+    }
+
+    @Composable
+    fun WarningErrorText(contents: String){
+        Text(
+            text = contents,
+            color =colors.warningerrorcolor,
+            fontSize = 15.sp,
+        )
+    }
+
+    @Composable
     fun HeaderText(contents: String){
         Text(
             text = contents,

@@ -9,5 +9,7 @@ data class ToDo (
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
     var title: String,
-    var createdAt: Date
+    var createdAt: Date,
+    var userId: String
+
 )
