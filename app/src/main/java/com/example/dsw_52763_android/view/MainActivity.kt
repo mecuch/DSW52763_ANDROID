@@ -12,6 +12,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.dsw_52763_android.utils.routes
 import com.example.dsw_52763_android.view_model.AuthViewModel
+import com.example.dsw_52763_android.view_model.PassManModelFactory
+import com.example.dsw_52763_android.view_model.PassManViewModel
 import com.example.dsw_52763_android.view_model.ToDoViewModel
 import com.example.dsw_52763_android.view_model.ToDoViewModelFactory
 import com.google.firebase.FirebaseApp
@@ -51,13 +53,32 @@ class MainActivity : ComponentActivity() {
                     arguments = listOf(
                         navArgument("userId") { defaultValue = "" }
                     )
+                ) {HomePage(navController = navController)}
+                composable(
+                    route = "notesPage/{userId}",
+                    arguments = listOf(
+                        navArgument("userId") { defaultValue = "" }
+                    )
                 ) { backStackEntry ->
                     val userId = backStackEntry.arguments?.getString("userId") ?: ""
 
                     val factory = ToDoViewModelFactory(applicationContext, userId)
                     val toDoViewModel: ToDoViewModel = viewModel(factory = factory)
 
-                    HomePage(navController = navController, viewModel = toDoViewModel)
+                    NotesPage(navController = navController, viewModel = toDoViewModel)
+                }
+                composable(
+                    route = "passmanPage/{userId}",
+                    arguments = listOf(
+                        navArgument("userId") { defaultValue = "" }
+                    )
+                ) { backStackEntry ->
+                    val userId = backStackEntry.arguments?.getString("userId") ?: ""
+
+                    val factory = PassManModelFactory(applicationContext, userId)
+                    val passManViewModel: PassManViewModel = viewModel(factory = factory)
+
+                    PassManPage(navController = navController, viewModel = passManViewModel)
                 }
             }
         }

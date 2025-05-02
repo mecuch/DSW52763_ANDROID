@@ -60,7 +60,7 @@ fun RegisterPage(navController: NavController, authViewModel : AuthViewModel){
             modifier = Modifier
                 .padding(horizontal = 16.dp)
         ) {
-            clickables.ClickableBack(navController)
+            clickables.ClickableBack(navController, routes.loginPage)
         }
     }
     Column(

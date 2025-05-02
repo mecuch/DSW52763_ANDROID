@@ -1,4 +1,4 @@
-package com.example.dsw_52763_android.db
+package com.example.dsw_52763_android.db.ToDo
 
 import androidx.room.TypeConverter
 import java.util.Date

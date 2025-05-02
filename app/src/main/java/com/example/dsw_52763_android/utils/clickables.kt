@@ -112,7 +112,7 @@ object clickables {
 
                 // Przejdź na stronę logowania
                 navController.navigate(routes.loginPage) {
-                    popUpTo(0) { inclusive = true } // Usuwa wszystkie wcześniejsze strony z back stacku
+                    popUpTo(0) { inclusive = true }
                 }
             }
         ) {
@@ -130,7 +130,7 @@ object clickables {
     }
 
     @Composable
-    fun ClickableBack(navController: NavController) {
+    fun ClickableBack(navController: NavController, destination: String) {
         Row {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -139,7 +139,7 @@ object clickables {
             Text("back",
                 fontSize = 18.sp,
                 color = colors.headerfontcolor,
-                modifier = Modifier.clickable { navController.navigate(routes.loginPage) }
+                modifier = Modifier.clickable { navController.navigate(destination) }
             )
         }
     }
