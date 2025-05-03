@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.auth.ktx)
+    implementation(libs.androidx.ui.test.android)
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")
@@ -88,5 +89,6 @@ dependencies {
     implementation ("com.google.firebase:firebase-bom:32.7.0")
     implementation("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-firestore")
+    implementation ("androidx.compose.runtime:runtime-livedata:<latest_version>")
 
 }

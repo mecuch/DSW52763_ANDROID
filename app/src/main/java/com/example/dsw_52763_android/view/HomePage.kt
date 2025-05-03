@@ -3,10 +3,12 @@ package com.example.dsw_52763_android.view
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
@@ -14,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.dsw_52763_android.R
 import com.example.dsw_52763_android.utils.clickables
 import com.example.dsw_52763_android.utils.non_clickables
 import com.google.firebase.auth.FirebaseAuth
@@ -32,8 +35,12 @@ fun HomePage( navController: NavController) {
     ) {
         Row(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(horizontal = 16.dp)
+                .padding(vertical = 22.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            non_clickables.UserLoginText(email)
             clickables.ClickableLogout(navController)
         }
     }
@@ -46,7 +53,6 @@ fun HomePage( navController: NavController) {
 
     ) {
         Column {
-            non_clickables.HeaderText("Hello, ${email}!")
         }
 
         Column(
@@ -54,8 +60,11 @@ fun HomePage( navController: NavController) {
                 .fillMaxHeight()
                 .padding(8.dp),
         ) {
-            clickables.ClickableButton(navController, "notesPage/$userId", "Notes/To do List Manager")
-            clickables.ClickableButton(navController, "passmanPage/$userId", "Password Manager")
+            non_clickables.HeaderText("Welcome in Lobby!")
+            Spacer(modifier = Modifier.height(50.dp))
+            clickables.CustomImageButton(R.drawable.notes, navController, "notesPage/$userId", "Notes/To do List Manager")
+            Spacer(modifier = Modifier.height(20.dp))
+            clickables.CustomImageButton(R.drawable.pass, navController, "passmanPage/$userId", "Password Manager")
 
 
 

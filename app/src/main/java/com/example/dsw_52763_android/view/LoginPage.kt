@@ -42,12 +42,15 @@ fun LoginPage(navController: NavController, authViewModel : AuthViewModel){
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val authState by authViewModel.authState.observeAsState()
+    var showValidationError by remember { mutableStateOf(false) }
+
     LaunchedEffect(authState) {
         if (authState is AuthState.Authenticated) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid
             if (userId != null) {
                 navController.navigate("homePage/$userId") {
                     popUpTo(0) { inclusive = true }
+
                 }
             }
         }
@@ -66,7 +69,9 @@ fun LoginPage(navController: NavController, authViewModel : AuthViewModel){
             non_clickables.StandardTextField(
                 values = username,
                 labelValues = "User name/E-mail",
-                onValueChange = { username = it }
+                onValueChange = { username = it },
+                verticalSize = 65
+
             )
             Spacer(modifier = Modifier.height(15.dp))
             non_clickables.StandardPasswordTextField(
@@ -75,18 +80,21 @@ fun LoginPage(navController: NavController, authViewModel : AuthViewModel){
                 onValueChange = { password = it }
             )
             Spacer(modifier = Modifier.height(15.dp))
-            Button(
-                onClick = {
+            clickables.FuncClickableButton({
+                if (username.isNotEmpty() && password.isNotEmpty()) {
                     authViewModel.login(username, password)
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Login Bitch!")
-            }
+                } else {
+                    showValidationError = true
+                }
+            }, "Login")
 
             if (authState is AuthState.Error) {
                 val error = (authState as AuthState.Error).message
                 non_clickables.WarningErrorText(error)
+            }
+
+            if (showValidationError) {
+                non_clickables.WarningErrorText("Login error!")
             }
             Spacer(modifier = Modifier.height(90.dp))
             clickables.ClickableText(navController,

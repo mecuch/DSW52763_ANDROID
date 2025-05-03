@@ -20,4 +20,24 @@ object images {
                 .padding(vertical = 10.dp)
         )
     }
+    @Composable
+    fun PassBackground() {
+        Image(
+            painter = painterResource(id = R.drawable.pass),
+            contentDescription = "logo",
+            modifier = Modifier
+                .size(140.dp)
+                .padding(vertical = 10.dp)
+        )
+    }
+    @Composable
+    fun NotesBackground() {
+        Image(
+            painter = painterResource(id = R.drawable.notes),
+            contentDescription = "logo",
+            modifier = Modifier
+                .size(140.dp)
+                .padding(vertical = 10.dp)
+        )
+    }
 }

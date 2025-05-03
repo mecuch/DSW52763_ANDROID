@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,6 +42,8 @@ import androidx.navigation.NavController
 import com.example.dsw_52763_android.R
 import com.example.dsw_52763_android.model.ToDo
 import com.example.dsw_52763_android.utils.clickables
+import com.example.dsw_52763_android.utils.colors
+import com.example.dsw_52763_android.utils.images
 import com.example.dsw_52763_android.utils.non_clickables
 import com.example.dsw_52763_android.utils.routes
 import com.example.dsw_52763_android.view_model.ToDoViewModel
@@ -50,80 +53,78 @@ import java.util.Locale
 fun NotesPage(viewModel: ToDoViewModel, navController: NavController) {
 
     val todoList by viewModel.allNotes.observeAsState()
-    var inputText by remember {
-        mutableStateOf("")
-    }
+    var inputText by remember { mutableStateOf("") }
     val email = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.email ?: "user"
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(WindowInsets.safeDrawing.asPaddingValues())
+            .padding(WindowInsets.safeDrawing.asPaddingValues()),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-        ) {
-            non_clickables.HeaderText("${email}")
-            clickables.ClickableBack(navController, "homePage/{userId}")
-
-        }
-    }
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .padding(top = 80.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-
-    ) {
-
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(8.dp),
-        ) {
-
+        item {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .padding(horizontal = 16.dp)
+                    .padding(vertical = 22.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                OutlinedTextField(
-                    modifier = Modifier.weight(1f),
-                    value = inputText,
-                    onValueChange = {
-                        inputText = it
-                    })
-                Button(onClick = {
-                    viewModel.addNote(inputText)
-                    inputText = ""
-                }) {
-                    Text(text = "Add")
-                }
+                clickables.ClickableBack(navController, "homePage/{userId}")
+                non_clickables.UserLoginText(email)
+                clickables.ClickableLogout(navController)
             }
-
-            todoList?.let {
-                LazyColumn(
-                    content = {
-                        itemsIndexed(it) { index: Int, item: ToDo ->
-                            TodoItem(item = item, onDelete = {
-                                viewModel.deleteNote(item.id)
-                            })
-                        }
-                    }
-                )
-            } ?: Text(
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                text = "No items yet",
-                fontSize = 16.sp
-            )
-
-
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                non_clickables.MediumHeaderText("Notes/To Do List\nManager")
+                images.Logos()
+            }
         }
 
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+            ) {
+                non_clickables.StandardTextField(
+                    values = inputText,
+                    onValueChange = { inputText = it },
+                    labelValues = "New note",
+                    verticalSize = 265
+                )
+                Spacer(modifier = Modifier.width(15.dp))
+                clickables.FuncClickableButton({
+                    viewModel.addNote(inputText)
+                    inputText = ""
+                }, "Add note")
+            }
+        }
+
+        if (todoList.isNullOrEmpty()) {
+            item {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    textAlign = TextAlign.Center,
+                    text = "No items yet",
+                    fontSize = 16.sp
+                )
+            }
+        } else {
+            itemsIndexed(todoList!!) { index: Int, item: ToDo ->
+                TodoItem(item = item, onDelete = {
+                    viewModel.deleteNote(item.id)
+                })
+            }
+        }
     }
 }
 
@@ -133,9 +134,10 @@ fun TodoItem(item : ToDo, onDelete : ()-> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.primary)
-            .padding(16.dp),
+            .clip(RoundedCornerShape(3.dp))
+            .background(colors.ornamentscolor)
+            .padding(16.dp)
+            .height(265.dp),
         verticalAlignment = Alignment.CenterVertically
 
     ) {
@@ -144,12 +146,12 @@ fun TodoItem(item : ToDo, onDelete : ()-> Unit) {
         ) {
             Text(
                 text = SimpleDateFormat("HH:mm:aa, dd/mm", Locale.ENGLISH).format(item.createdAt),
-                fontSize = 12.sp,
-                color = Color.LightGray
+                fontSize = 15.sp,
+                color = colors.grantedcolor
             )
             Text(
                 text = item.title,
-                fontSize = 20.sp,
+                fontSize = 25.sp,
                 color = Color.White
             )
         }

@@ -41,6 +41,9 @@ fun RegisterPage(navController: NavController, authViewModel : AuthViewModel){
     var password by remember { mutableStateOf("") }
     var confirmpassword by remember { mutableStateOf("") }
     val authState by authViewModel.authState.observeAsState()
+    var showValidationError1 by remember { mutableStateOf(false) }
+    var showValidationError2 by remember { mutableStateOf(false) }
+    var validationErrorMessage by remember { mutableStateOf("") }
     LaunchedEffect(authState) {
         if (authState is AuthState.Authenticated) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -76,13 +79,15 @@ fun RegisterPage(navController: NavController, authViewModel : AuthViewModel){
             non_clickables.StandardTextField(
                 values = username,
                 labelValues = "Full name",
-                onValueChange = { username = it }
+                onValueChange = { username = it },
+                verticalSize = 65
             )
             Spacer(modifier = Modifier.height(15.dp))
             non_clickables.StandardTextField(
                 values = emails,
                 labelValues = "E-mail",
-                onValueChange = { emails = it }
+                onValueChange = { emails = it },
+                verticalSize = 65
             )
             Spacer(modifier = Modifier.height(15.dp))
             non_clickables.StandardPasswordTextField(
@@ -97,22 +102,28 @@ fun RegisterPage(navController: NavController, authViewModel : AuthViewModel){
                 onValueChange = { confirmpassword = it }
             )
             Spacer(modifier = Modifier.height(15.dp))
-            Button(
-                onClick = {
-                    if (password == confirmpassword) {
-                        authViewModel.signup(emails, password)
-                    } else {
-                        // Możesz zareagować lokalnie np. komunikatem
+            clickables.FuncClickableButton({
+                when {
+                    username.isBlank() || emails.isBlank() || password.isBlank() || confirmpassword.isBlank() -> {
+                        validationErrorMessage = "All fields are required!"
+                        showValidationError1 = true
                     }
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Sign Up")
-            }
+                    password != confirmpassword -> {
+                        validationErrorMessage = "Passwords do not match!"
+                        showValidationError2 = true
+                    }
+                    else -> {
+                        authViewModel.signup(emails, password)
+                    }
+                }
+            }, "Sign Up")
 
             if (authState is AuthState.Error) {
                 val error = (authState as AuthState.Error).message
                 non_clickables.WarningErrorText(error)
+            }
+            if (showValidationError1 || showValidationError2) {
+                non_clickables.WarningErrorText(validationErrorMessage)
             }
             Spacer(
                 modifier = Modifier.height(100.dp))

@@ -1,7 +1,11 @@
 package com.example.dsw_52763_android.view
 
 
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,10 +45,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.dsw_52763_android.R
 import com.example.dsw_52763_android.model.PassMan
+import com.example.dsw_52763_android.model.ToDo
 import com.example.dsw_52763_android.utils.clickables
+import com.example.dsw_52763_android.utils.colors
+import com.example.dsw_52763_android.utils.images
 import com.example.dsw_52763_android.utils.non_clickables
-import com.example.dsw_52763_android.utils.routes
 import com.example.dsw_52763_android.view_model.PassManViewModel
+
 
 
 @Composable
@@ -61,98 +69,114 @@ fun PassManPage(viewModel: PassManViewModel, navController: NavController) {
     }
     val email = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.email ?: "user"
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(WindowInsets.safeDrawing.asPaddingValues())
+            .padding(WindowInsets.safeDrawing.asPaddingValues()),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-        ) {
-            non_clickables.HeaderText("${email}")
-            clickables.ClickableBack(navController, "homePage/{userId}")
-        }
-    }
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .padding(top = 80.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-
-    ) {
-
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(8.dp),
-        ) {
-
+        item {
+            // 🔹 Nagłówek
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
+                    .padding(horizontal = 16.dp)
+                    .padding(vertical = 22.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                OutlinedTextField(
-                    modifier = Modifier.weight(1f),
-                    value = inputTexturls,
-                    onValueChange = {
-                        inputTexturls = it
-                    })
-                OutlinedTextField(
-                    modifier = Modifier.weight(1f),
-                    value = inputTextlogins,
-                    onValueChange = {
-                        inputTextlogins = it
-                    })
-                OutlinedTextField(
-                    modifier = Modifier.weight(1f),
-                    value = inputTextpasswords,
-                    onValueChange = {
-                        inputTextpasswords = it
-                    })
-                Button(onClick = {
-                    viewModel.addPass(inputTexturls, inputTextlogins, inputTextpasswords)
-                    inputTexturls = ""
-                    inputTextlogins = ""
-                    inputTextpasswords = ""
-                }) {
-                    Text(text = "Add")
-                }
+                clickables.ClickableBack(navController, "homePage/{userId}")
+                non_clickables.UserLoginText(email)
+                clickables.ClickableLogout(navController)
+
             }
-
-            recordsList?.let {
-                LazyColumn(
-                    content = {
-                        itemsIndexed(it) { index: Int, item: PassMan ->
-                            PassManItem(item = item, onDelete = {
-                                viewModel.deletePass(item.id)
-                            })
-                        }
-                    }
-                )
-            } ?: Text(
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                text = "Huh?",
-                fontSize = 16.sp
-            )
-
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                non_clickables.MediumHeaderText("Password\nManager")
+                images.Logos()
+            }
         }
 
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                non_clickables.StandardTextField(
+                    values = inputTexturls,
+                    labelValues = "URL",
+                    onValueChange = { inputTexturls = it },
+                    verticalSize = 65
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                non_clickables.StandardTextField(
+                    values = inputTextlogins,
+                    labelValues = "Login",
+                    onValueChange = { inputTextlogins = it },
+                    verticalSize = 65
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                non_clickables.StandardTextField(
+                    values = inputTextpasswords,
+                    labelValues = "Password",
+                    onValueChange = { inputTextpasswords = it },
+                    verticalSize = 65
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                clickables.FuncClickableButton({viewModel.addPass(inputTexturls, inputTextlogins, inputTextpasswords)
+                    inputTexturls = ""
+                    inputTextlogins = ""
+                    inputTextpasswords = ""}, "Add record")
+            }
+        }
+
+        // 🔹 Lista rekordów z bazy
+        recordsList?.let { list ->
+            itemsIndexed(list) { _, item ->
+                PassManItem(item = item, onDelete = {
+                    viewModel.deletePass(item.id)
+                })
+            }
+        } ?: item {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                textAlign = TextAlign.Center,
+                text = "Brak danych",
+                fontSize = 16.sp
+            )
+        }
+        if (recordsList.isNullOrEmpty()) {
+            item {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    textAlign = TextAlign.Center,
+                    text = "No records yet",
+                    fontSize = 16.sp
+                )
+            }
+        }
     }
 }
 @Composable
 fun PassManItem(item : PassMan, onDelete : ()-> Unit) {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.primary)
-            .padding(16.dp),
+            .clip(RoundedCornerShape(3.dp))
+            .background(colors.ornamentscolor)
+            .padding(16.dp)
+            .height(200.dp),
         verticalAlignment = Alignment.CenterVertically
 
     ) {
@@ -160,18 +184,34 @@ fun PassManItem(item : PassMan, onDelete : ()-> Unit) {
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = item.urls,
-                fontSize = 15.sp,
-                color = Color.LightGray
+                text = "URL: ${item.urls}",
+                fontSize = 12.sp,
+                color = colors.grantedcolor,
+                modifier = Modifier.clickable {
+                    val rawUrl = item.urls.trim()
+
+                    if (rawUrl.isNotBlank()) {
+                        val formattedUrl = if (!rawUrl.startsWith("http://") && !rawUrl.startsWith("https://")) {
+                            "https://$rawUrl"
+                        } else {
+                            rawUrl
+                        }
+                        val uri = Uri.parse(formattedUrl)
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        context.startActivity(intent)
+                    }
+                }
             )
+            Spacer(modifier = Modifier.height(50.dp))
             Text(
-                text = item.logins,
-                fontSize = 15.sp,
+                text = "Login: ${item.logins}",
+                fontSize = 18.sp,
                 color = Color.White
             )
+            Spacer(modifier = Modifier.height(50.dp))
             Text(
-                text = item.passwords,
-                fontSize = 15.sp,
+                text = "Password: ${item.passwords}",
+                fontSize = 18.sp,
                 color = Color.White
             )
         }

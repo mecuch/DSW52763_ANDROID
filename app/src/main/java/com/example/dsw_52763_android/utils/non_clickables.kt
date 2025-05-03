@@ -1,6 +1,7 @@
 package com.example.dsw_52763_android.utils
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -52,9 +53,28 @@ object non_clickables {
             fontWeight = FontWeight.Bold
             )
     }
+    @Composable
+    fun MediumHeaderText(contents: String){
+        Text(
+            text = contents,
+            color = colors.headerfontcolor,
+            fontSize = 25.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
 
     @Composable
-    fun StandardTextField(values: String, labelValues: String, onValueChange: (String) -> Unit) {
+    fun UserLoginText(contents: String){
+        Text(
+            text = contents,
+            color = colors.headerfontcolor,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+
+    @Composable
+    fun StandardTextField(values: String, labelValues: String, onValueChange: (String) -> Unit, verticalSize: Int) {
         OutlinedTextField(
             value = values,
             onValueChange = onValueChange,
@@ -64,7 +84,9 @@ object non_clickables {
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = colors.ornamentscolor,
                 unfocusedBorderColor = colors.ligthornamentscolor),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(verticalSize.dp)
         )
     }
 
