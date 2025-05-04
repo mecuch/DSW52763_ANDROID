@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.dsw_52763_android.utils.clickables
+import com.example.dsw_52763_android.utils.images
 import com.example.dsw_52763_android.utils.non_clickables
 import com.example.dsw_52763_android.utils.routes
 import com.example.dsw_52763_android.view_model.AuthState
@@ -50,14 +53,18 @@ fun RegisterPage(navController: NavController, authViewModel : AuthViewModel){
     }
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(WindowInsets.safeDrawing.asPaddingValues())
+            .width(360.dp)
     ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             clickables.ClickableBack(navController, routes.loginPage)
+            Spacer(modifier = Modifier.weight(1f))
+            images.Ellipse()
         }
     }
     Column(

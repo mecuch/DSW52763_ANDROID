@@ -114,7 +114,7 @@ fun NotesPage(viewModel: ToDoViewModel, navController: NavController) {
                 )
             }
         } else {
-            itemsIndexed(todoList!!) { index: Int, item: ToDo ->
+            itemsIndexed(todoList!!) { _: Int, item: ToDo ->
                 TodoItem(item = item, onDelete = {
                     viewModel.deleteNote(item.id)
                 })

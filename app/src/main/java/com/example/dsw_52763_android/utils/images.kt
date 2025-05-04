@@ -20,5 +20,15 @@ object images {
                 .padding(vertical = 10.dp)
         )
     }
+    @Composable
+    fun Ellipse() {
+        Image(
+            painter = painterResource(id = R.drawable.ellipse),
+            contentDescription = "logo",
+            modifier = Modifier
+                .padding(top = 0.dp, end = 0.dp)
+                .size(140.dp)
+        )
+    }
 
 }
