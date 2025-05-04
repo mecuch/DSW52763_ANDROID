@@ -18,7 +18,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,93 +32,14 @@ import com.google.firebase.auth.FirebaseAuth
 
 object clickables {
 
-//    @Composable
-//    fun RegisterClickableButton(
-//        navController: NavController,
-//        destinations: String,
-//        username: String,
-//        email: String,
-//        password: String,
-//        confirmPassword: String,
-//        registerViewModel: RegisterUserViewModel // <-- PRZEKAZUJEMY ViewModel
-//    ) {
-//        Button(
-//            onClick = {
-//                registerViewModel.registerUser(
-//                    fullName = username,
-//                    email = email,
-//                    password = password,
-//                    confirmPassword = confirmPassword
-//                )
-//            },
-//            colors = ButtonDefaults.buttonColors(
-//                containerColor = colors.ornamentscolor,
-//                contentColor = Color.White
-//            ),
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            Text("Sign Up")
-//        }
-//
-//        if (registerViewModel.registrationSuccess.value) {
-//            LaunchedEffect(Unit) {
-//                navController.navigate(destinations) {
-//                    popUpTo(destinations) { inclusive = true }
-//                }
-//            }
-//            non_clickables.GrantedText("User created successfully!")
-//        }
-//
-//        if (registerViewModel.errorMessage.value.isNotEmpty()) {
-//            non_clickables.WarningErrorText(registerViewModel.errorMessage.value)
-//        }
-//    }
-
-//    @Composable
-//    fun LoginClickableButton(
-//        navController: NavController,
-//        username: String,
-//        password: String,
-//        loginViewModel: LoginUserViewModel // <-- PRZEKAZUJEMY ViewModel
-//    ) {
-//        Button(
-//            onClick = {
-//                loginViewModel.loginUser(
-//                    email = username,
-//                    password = password
-//                )
-//            },
-//            colors = ButtonDefaults.buttonColors(
-//                containerColor = colors.ornamentscolor,
-//                contentColor = Color.White
-//            ),
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            Text("Sign In")
-//        }
-//
-//        if (loginViewModel.loginSuccess.value) {
-//            LaunchedEffect(Unit) {
-//                val fullName = loginViewModel.fullName
-//                navController.navigate("homePage/$fullName") {
-//                    popUpTo(routes.loginPage) { inclusive = true }
-//                }
-//            }
-//            non_clickables.GrantedText("Login Successful!")
-//        }
-//
-//        if (loginViewModel.errorMessage.value.isNotEmpty()) {
-//            non_clickables.WarningErrorText(loginViewModel.errorMessage.value)
-//        }
-//    }
 @Composable
 fun CustomImageButton(imageResId: Int, navController: NavController, destinations: String, title: String
 ) {
     Button(
         onClick = { navController.navigate(destinations) },
-        contentPadding = PaddingValues(0.dp), // Usuwamy domyślny padding
+        contentPadding = PaddingValues(0.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent) // Tło przezroczyste
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
     ) {
         Box(
             modifier = Modifier
@@ -135,7 +55,6 @@ fun CustomImageButton(imageResId: Int, navController: NavController, destination
                     .clip(RoundedCornerShape(12.dp))
             )
 
-            // Overlay z napisem
             Text(
                 text = title,
                 color = Color.White,
@@ -150,10 +69,8 @@ fun CustomImageButton(imageResId: Int, navController: NavController, destination
     fun ClickableLogout(navController: NavController) {
         Row(
             modifier = Modifier.clickable {
-                // Wyloguj użytkownika z Firebase
                 FirebaseAuth.getInstance().signOut()
 
-                // Przejdź na stronę logowania
                 navController.navigate(routes.loginPage) {
                     popUpTo(0) { inclusive = true }
                 }

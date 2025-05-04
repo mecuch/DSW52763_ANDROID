@@ -19,7 +19,6 @@ class PassManViewModel(application: Application, private val userId: String) : A
             passManDao.addRecord(pass)
         }
     }
-
     fun deletePass(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             passManDao.deleteRecord(id, userId)

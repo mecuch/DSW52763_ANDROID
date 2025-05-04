@@ -21,7 +21,6 @@ class ToDoViewModel(application: Application, private val userId: String) : Andr
             todoDao.addTodo(note)
         }
     }
-
     fun deleteNote(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             todoDao.deleteToDo(id, userId)

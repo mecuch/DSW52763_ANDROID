@@ -3,7 +3,6 @@ package com.example.dsw_52763_android.view
 
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,11 +19,8 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,13 +40,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.dsw_52763_android.R
 import com.example.dsw_52763_android.model.PassMan
-import com.example.dsw_52763_android.model.ToDo
 import com.example.dsw_52763_android.utils.clickables
 import com.example.dsw_52763_android.utils.colors
 import com.example.dsw_52763_android.utils.images
 import com.example.dsw_52763_android.utils.non_clickables
 import com.example.dsw_52763_android.view_model.PassManViewModel
-
 
 
 @Composable
@@ -77,7 +70,6 @@ fun PassManPage(viewModel: PassManViewModel, navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            // 🔹 Nagłówek
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -135,7 +127,6 @@ fun PassManPage(viewModel: PassManViewModel, navController: NavController) {
             }
         }
 
-        // 🔹 Lista rekordów z bazy
         recordsList?.let { list ->
             itemsIndexed(list) { _, item ->
                 PassManItem(item = item, onDelete = {
